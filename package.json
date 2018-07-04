@@ -1,5 +1,5 @@
 {
-  "name": "pytech",
+  "name": "mobileMall",
   "version": "1.0.0",
   "description": "mobileMall",
   "main": "index.js",
@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.puyi.tech:group-h5/pytech.git"
+    "url": "git@github.com:lifeLikeACode/mobileMall.git"
   },
   "keywords": [
     "mobileMall"
   ],
   "author": "xujian",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
