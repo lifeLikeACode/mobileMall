@@ -3,9 +3,6 @@ const webpack = require('webpack')
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin   = require('html-webpack-plugin')
 const cleanWebpackPlugin =require('clean-webpack-plugin')
-console.log(1)
-console.log(path.resolve(__dirname, 'dist/'))
-console.log(2)
 // 获取html-webpack-plugin参数的方法 
 const getHtmlConfig = function(name, title){
   return {
@@ -98,7 +95,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: { 
-    port: 8080,
+    port: 8300,
     inline: true,
     hot: true
   },
