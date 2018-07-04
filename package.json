@@ -1,7 +1,7 @@
 {
   "name": "pytech",
   "version": "1.0.0",
-  "description": "朴一科技公司官网",
+  "description": "mobileMall",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +13,7 @@
     "url": "git@git.puyi.tech:group-h5/pytech.git"
   },
   "keywords": [
-    "朴一科技官网"
+    "mobileMall"
   ],
   "author": "xujian",
   "license": "ISC",
