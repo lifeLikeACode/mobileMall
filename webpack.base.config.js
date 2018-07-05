@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin   = require('html-webpack-plugin')
 const cleanWebpackPlugin =require('clean-webpack-plugin')
 // 获取html-webpack-plugin参数的方法 
@@ -14,13 +14,13 @@ const getHtmlConfig = function(name, title){
       chunks      : ['common', name]
   };
 };
-module.exports = {
+const base = {
   entry: {
     'index': './src/page/index/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[hash].js',
+    filename: '[name].[hash:7].js',
   },
   module:{
     rules:[{
@@ -28,7 +28,7 @@ module.exports = {
         use: {
             loader: 'babel-loader',
             options: {
-                presets: ["env","stage-0"]
+                presets: ["env"]
             }
         },
         include:path.join(__dirname,'./src'),
@@ -39,8 +39,19 @@ module.exports = {
         loader: 'html-loader'
       },
       {
+        test: /\.tpl$/,
+        loader: 'ejs-loader'
+      },
+      {
         test: /\.css$/,
-        use: ExtractTextWebpackPlugin.extract('css-loader',"style-loader"),
+        use: [
+          'css-hot-loader', //支持热更新
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          "css-loader",
+          'postcss-loader'
+        ],
         include:path.join(__dirname,'./src'),
         exclude:/node_modules/
       },
@@ -80,24 +91,23 @@ module.exports = {
               // 设置优先级，防止和自定义的公共代码提取时被覆盖，不进行打包
               priority: 10    
           },
-          utils: { // 抽离自己写的公共代码，utils这个名字可以随意起
-              chunks: 'initial',
-              name: 'utils',  // 任意命名
-              minSize: 0    // 只要超出0字节就生成一个新包
-          }
+          // utils: { // 抽离自己写的公共代码，utils这个名字可以随意起
+          //     chunks: 'initial',
+          //     name: './src/common/js',  // 任意命名
+          //     minSize: 0    // 只要超出0字节就生成一个新包
+          // }
       }
     }
   },
   plugins: [
-    new ExtractTextWebpackPlugin('css/[name].[hash].css'),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
     new HtmlWebpackPlugin(getHtmlConfig('index', '首页')),
+    new HtmlWebpackPlugin(getHtmlConfig('about', '关于我们')),
     new cleanWebpackPlugin(path.join(__dirname,'dist')),
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  devServer: { 
-    port: 8300,
-    inline: true,
-    hot: true
-  },
-  mode: 'development'
+  ]
+  
 }
+module.exports = base ;
