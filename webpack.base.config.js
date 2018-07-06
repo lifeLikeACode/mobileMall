@@ -6,7 +6,7 @@ const cleanWebpackPlugin =require('clean-webpack-plugin')
 // 获取html-webpack-plugin参数的方法 
 const getHtmlConfig = function(name, title){
   return {
-      template    : './src/view/' + name + '.html',
+      template    : './src/view/' + name + '.ejs',
       filename    : 'view/' + name + '.html',
       title       : title,
       inject      : true,
@@ -24,7 +24,7 @@ const base = {
   },
   module:{
     rules:[{
-        test:/\.jsx?$/,
+        test:/\.js$/,
         use: {
             loader: 'babel-loader',
             options: {
@@ -39,18 +39,29 @@ const base = {
         loader: 'html-loader'
       },
       {
-        test: /\.tpl$/,
+        test: /\.ejs$/,
         loader: 'ejs-loader'
       },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     'css-hot-loader', //支持热更新
+      //     MiniCssExtractPlugin.loader,
+      //     "css-loader",
+      //     'postcss-loader'
+      //   ],
+      //   include:path.join(__dirname,'./src'),
+      //   exclude:/node_modules/
+      // },
       {
-        test: /\.css$/,
-        use: [
+        test: /\.styl$/,
+        use:[
+          'style-loader',
           'css-hot-loader', //支持热更新
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
+          MiniCssExtractPlugin.loader,
           "css-loader",
-          'postcss-loader'
+          'postcss-loader',
+          "stylus-loader"
         ],
         include:path.join(__dirname,'./src'),
         exclude:/node_modules/
@@ -105,7 +116,7 @@ const base = {
       chunkFilename: "[id].css"
     }),
     new HtmlWebpackPlugin(getHtmlConfig('index', '首页')),
-    new HtmlWebpackPlugin(getHtmlConfig('about', '关于我们')),
+    //new HtmlWebpackPlugin(getHtmlConfig('about', '关于我们')),
     new cleanWebpackPlugin(path.join(__dirname,'dist')),
   ]
   

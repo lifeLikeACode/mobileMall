@@ -5,7 +5,7 @@ base.devServer = {
   port: 8300,
   inline: true,
   hot: true,
-  open: true
+  open: false
 }
 const devConfig = {
   ...base
