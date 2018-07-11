@@ -3,24 +3,27 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin   = require('html-webpack-plugin')
 const cleanWebpackPlugin =require('clean-webpack-plugin')
+const jquery = require('jquery')
 // 获取html-webpack-plugin参数的方法 
 const getHtmlConfig = function(name, title){
   return {
       template    : './src/view/' + name + '.ejs',
       filename    : 'view/' + name + '.html',
       title       : title,
-      inject      : true,
+      inject      : 'body',
       hash        : true,
       chunks      : ['common', name]
   };
 };
 const base = {
   entry: {
-    'index': './src/page/index/index.js'
+    'index': './src/page/index/index.js',
+    'about': './src/page/about/about.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash:7].js',
+    publicPath: '/'
   },
   module:{
     rules:[{
@@ -34,14 +37,14 @@ const base = {
         include:path.join(__dirname,'./src'),
         exclude:/node_modules/
       },
-      {
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
-        test: /\.ejs$/,
-        loader: 'ejs-loader'
-      },
+      // {
+      //   test: /\.html$/,
+      //   loader: 'html-loader'
+      // },
+      // {
+      //   test: /\.ejs$/,
+      //   loader: 'ejs-loader'
+      // },
       // {
       //   test: /\.css$/,
       //   use: [
@@ -116,8 +119,12 @@ const base = {
       chunkFilename: "[id].css"
     }),
     new HtmlWebpackPlugin(getHtmlConfig('index', '首页')),
-    //new HtmlWebpackPlugin(getHtmlConfig('about', '关于我们')),
+    new HtmlWebpackPlugin(getHtmlConfig('about', '关于我们')),
     new cleanWebpackPlugin(path.join(__dirname,'dist')),
+    new webpack.ProvidePlugin({
+      $:'jquery',
+      jQuery:'jquery'
+    }),
   ]
   
 }
