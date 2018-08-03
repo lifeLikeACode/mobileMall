@@ -4,13 +4,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin   = require('html-webpack-plugin')
 const cleanWebpackPlugin =require('clean-webpack-plugin')
 const jquery = require('jquery')
+const env = process.env.NODE_ENV || 'dev'
 // 获取html-webpack-plugin参数的方法 
 const getHtmlConfig = function(name, title){
   return {
-      template    : './src/view/' + name + '.ejs',
-      filename    : 'view/' + name + '.html',
+      template    : './src/views/' + name + '.ejs',
+      filename    : name + '.ejs',
       title       : title,
-      inject      : 'body',
+      inject      : true,
       hash        : true,
       chunks      : ['common', name]
   };
@@ -23,7 +24,7 @@ const base = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash:7].js',
-    publicPath: '/'
+    publicPath: env == 'dev' ? ('http://localhost:8080/') : '/'
   },
   module:{
     rules:[{
@@ -41,10 +42,10 @@ const base = {
       //   test: /\.html$/,
       //   loader: 'html-loader'
       // },
-      // {
-      //   test: /\.ejs$/,
-      //   loader: 'ejs-loader'
-      // },
+      {
+        test: /\.ejs$/,
+        loader: 'ejs-loader'
+      },
       // {
       //   test: /\.css$/,
       //   use: [
@@ -125,6 +126,7 @@ const base = {
       $:'jquery',
       jQuery:'jquery'
     }),
+    new webpack.HotModuleReplacementPlugin()
   ]
   
 }
